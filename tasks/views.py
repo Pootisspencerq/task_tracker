@@ -8,6 +8,10 @@ from tasks import models
 from tasks.forms import TaskForm, TaskFilterForm, NoteForm
 from tasks.mixins import UserIsOwnerMixins
 from .forms import NoteForm
+from django.views.generic.edit import CreateView
+from django.urls import reverse_lazy
+from tasks.models import Theme
+from tasks.forms import ThemeForm
 
 class TaskListView(LoginRequiredMixin, ListView):
     model = models.Task
@@ -100,3 +104,9 @@ class NoteCreateView(LoginRequiredMixin, View):
             note.user = request.user
             note.save()
         return HttpResponseRedirect(task.get_absolute_url())
+    
+class ThemeCreateView(CreateView):
+    model = Theme
+    form_class = ThemeForm
+    template_name = 'themes/theme_form.html'
+    success_url = reverse_lazy('tasks:task-list')    
