@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="UTF-8">
+    <title>Мемний Перемикач Тем</title>
+    <link rel="stylesheet" href="static/meme_theme/style.css">
+</head>
+<body>
+    <div class="content">
+        <h1>Мемний Трекер Завдань</h1>
+        <p>Натискай кнопку нижче, щоб перемикати теми!</p>
+        <div class="links">
+            <a href="editor.html">🎨 Редактор Тем</a> |
+            <a href="workshop.html">🛍 Воркшоп Тем</a>
+        </div>
+    </div>
+    <button class="theme-toggle" onclick="toggleTheme()">🌓</button>
+
+    <script>
+        const THEMES = ['theme-light', 'theme-dark', 'theme-meme'];
+        let currentTheme = localStorage.getItem('theme') || 'theme-light';
+
+        function applyTheme(theme) {
+            THEMES.forEach(t => document.body.classList.remove(t));
+            document.body.classList.add(theme);
+            localStorage.setItem('theme', theme);
+
+            // Мемна тема: музика та випадковий фон
+            if (theme === 'theme-meme') {
+                // Додати фонове зображення
+                const images = ['meme_bg.jpg', 'user_photo.jpg', 'download.jpg'];
+                const randomImage = images[Math.floor(Math.random() * images.length)];
+                document.body.style.backgroundImage = `url('static/meme_theme/${randomImage}')`;
+                document.body.style.backgroundSize = 'cover';
+                document.body.style.backgroundRepeat = 'no-repeat';
+
+                // Музика
+                if (!document.getElementById('meme-audio')) {
+                    const audio = document.createElement('audio');
+                    audio.id = 'meme-audio';
+                    audio.src = 'static/meme_theme/hamster_dance.mp3';
+                    audio.loop = true;
+                    audio.autoplay = true;
+                    audio.volume = 0.2;
+                    document.body.appendChild(audio);
+                }
+            } else {
+                // Очистити мемні елементи
+                document.body.style.backgroundImage = '';
+                const oldAudio = document.getElementById('meme-audio');
+                if (oldAudio) oldAudio.remove();
+            }
+        }
+
+        function toggleTheme() {
+            const nextTheme = THEMES[(THEMES.indexOf(currentTheme) + 1) % THEMES.length];
+            currentTheme = nextTheme;
+            applyTheme(nextTheme);
+        }
+
+        window.onload = () => {
+            applyTheme(currentTheme);
+        };
+    </script>
+</body>
+</html>

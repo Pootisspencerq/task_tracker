@@ -1,20 +1,19 @@
 from django.urls import path
-from tasks import views
-from tasks.views import ThemeCreateView
-from django.conf import settings
-from django.conf.urls.static import static
+from .views import (
+    TaskListView, TaskDetailView, TaskUpdateView, TaskDeleteView,
+    TaskCreateView, TaskCompleteView,
+    ThemeEditorView, ThemeWorkshopView
+)
 
 app_name = 'tasks'
 
 urlpatterns = [
-    path('', views.TaskListView.as_view(), name='task-list'),
-    path('<int:pk>/', views.TaskDetailView.as_view(), name='task-detail'),
-    path('<int:pk>/update/', views.TaskUpdateView.as_view(), name='task-update'),
-    path('<int:pk>/delete/', views.TaskDeleteView.as_view(), name='task-delete'),
-    path('task-create/', views.TaskCreateView.as_view(), name='task-create'),
-    path('<int:pk>/complete/', views.TaskCompleteView.as_view(), name='task-complete'),
-    path('themes/create/', ThemeCreateView.as_view(), name='theme-create'),
+    path('', TaskListView.as_view(), name='task-list'),
+    path('<int:pk>/', TaskDetailView.as_view(), name='task-detail'),
+    path('<int:pk>/update/', TaskUpdateView.as_view(), name='task-update'),
+    path('<int:pk>/delete/', TaskDeleteView.as_view(), name='task-delete'),
+    path('task-create/', TaskCreateView.as_view(), name='task-create'),
+    path('<int:pk>/complete/', TaskCompleteView.as_view(), name='task-complete'),
+    path('themes/editor/', ThemeEditorView.as_view(), name='editor'),
+    path('themes/workshop/', ThemeWorkshopView.as_view(), name='workshop'),
 ]
-
-if settings.DEBUG:
-    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

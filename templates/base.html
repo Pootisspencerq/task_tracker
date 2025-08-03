@@ -1,152 +1,203 @@
-{% load static %}
 <!DOCTYPE html>
 <html lang="uk">
 <head>
-  <meta charset="UTF-8">
-  <title>{% block title %}Task Tracker{% endblock %}</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
-  <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <meta charset="UTF-8">
+    <title>{% block title %}Сайт{% endblock %}</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/css/bootstrap.min.css" rel="stylesheet">
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+    <link rel="stylesheet" href="{% static 'meme_theme/style.css' %}">
+    <style>
+        body.theme-light {
+            background-color: #ffffff;
+            color: #000000;
+        }
 
-  <style>
-    body.light-mode {
-      background-color: #ffffff;
-      color: #000000;
-    }
+        body.theme-dark {
+            background-color: #121212;
+            color: #e0e0e0;
+        }
 
-    body.dark-mode {
-      background-color: #121212;
-      color: #ffffff;
-    }
+        body.theme-meme {
+            background-image: url("/static/meme_theme/meme_bg.jpg");
+            background-size: cover;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            background-position: center;
+            color: lime;
+            font-family: "Comic Sans MS", cursive, sans-serif;
+        }
 
-    body.meme-mode {
-      background-image: url("{% static 'img/meme_bg.jpg' %}");
-      background-size: cover;
-      background-position: center;
-      color: #00ff00;
-      font-family: 'Comic Sans MS', cursive, sans-serif;
-    }
+        .theme-meme h1,
+        .theme-meme h2,
+        .theme-meme h3,
+        .theme-meme p,
+        .theme-meme a,
+        .theme-meme button {
+            color: lime !important;
+            text-shadow: 1px 1px 2px #000;
+        }
 
-    /* Показ логотипа Шрека в мемній темі */
-    .simple-logo {
-      display: inline-block;
-    }
+        .theme-toggle {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            padding: 10px 15px;
+            border: none;
+            background-color: #222;
+            color: white;
+            font-size: 18px;
+            border-radius: 50%;
+            z-index: 999;
+            transition: background-color 0.3s;
+        }
 
-    body.meme-mode .simple-logo {
-      display: none;
-    }
+        .theme-toggle:hover {
+            background-color: #444;
+        }
 
-    body.meme-mode .navbar-brand::before {
-      content: '';
-      display: inline-block;
-      width: 32px;
-      height: 32px;
-      margin-right: 10px;
-      background-image: url("{% static 'img/shrek_logo.png' %}");
-      background-size: contain;
-      background-repeat: no-repeat;
-    }
+        /* KONAMI OVERLAY STYLES */
+        #konamiOverlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100vw;
+            height: 100vh;
+            background: rgba(0, 0, 0, 0.97);
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            z-index: 9999;
+        }
 
-    /* Konami overlay styles */
-    #konamiOverlay {
-      position: fixed;
-      inset: 0;
-      background: rgba(0, 0, 0, 0.95);
-      display: none;
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-    }
+        #konamiOverlay img#konamiMegaImage {
+            width: 400px;
+            margin-bottom: 20px;
+            border-radius: 16px;
+            box-shadow: 0 0 25px cyan;
+        }
 
-    #konamiOverlay iframe {
-      width: 90%;
-      max-width: 560px;
-      height: 315px;
-      border-radius: 15px;
-      box-shadow: 0 0 30px red;
-    }
+        #konamiOverlay iframe {
+            width: 560px;
+            height: 315px;
+            border: none;
+            border-radius: 16px;
+            box-shadow: 0 0 20px red;
+        }
 
-    #konamiOverlay button {
-      margin-top: 20px;
-      padding: 10px 20px;
-      background: #28a745;
-      color: white;
-      border: none;
-      border-radius: 8px;
-    }
+        #konamiOverlay button {
+            margin-top: 20px;
+            padding: 10px 20px;
+            background-color: #198754;
+            color: white;
+            border: none;
+            border-radius: 8px;
+            font-size: 16px;
+            box-shadow: 0 0 10px #198754;
+        }
 
-    #konamiOverlay button:hover {
-      background-color: #1c7a34;
-    }
-  </style>
+        #konamiOverlay button:hover {
+            background-color: #157347;
+        }
+    </style>
 </head>
-<body>
-  {% include 'menu.html' %}
 
-  <div class="container mt-4">
-    {% block content %}{% endblock %}
-  </div>
+<body class="theme-light">
+    {% include 'menu.html' %}
 
-  <!-- Theme dropdown -->
-  <div class="dropdown position-fixed bottom-0 end-0 m-3">
-    <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown">
-      🌓 Тема
-    </button>
-    <ul class="dropdown-menu">
-      <li><a class="dropdown-item" href="#" onclick="setTheme('light')">☀️ Світла</a></li>
-      <li><a class="dropdown-item" href="#" onclick="setTheme('dark')">🌙 Темна</a></li>
-      <li><a class="dropdown-item" href="#" onclick="setTheme('meme')">😂 Мемна</a></li>
-    </ul>
-  </div>
-
-  <!-- Konami Code Overlay -->
-  <div id="konamiOverlay">
-    <div class="text-center">
-      <iframe id="konamiVideo" src="" allow="autoplay; encrypted-media" allowfullscreen></iframe>
-      <br>
-      <button onclick="hideKonami()">✖ Закрити</button>
+    <div class="container mt-4">
+        {% block content %}{% endblock %}
     </div>
-  </div>
 
-  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
+    <script>
+        const THEMES = ['theme-light', 'theme-dark', 'theme-meme'];
+        let currentTheme = localStorage.getItem('theme') || 'theme-light';
 
-  <script>
-    function setTheme(theme) {
-      document.body.classList.remove('light-mode', 'dark-mode', 'meme-mode');
-      document.body.classList.add(`${theme}-mode`);
-      localStorage.setItem('theme', theme);
-    }
+        function applyTheme(theme) {
+            THEMES.forEach(t => document.body.classList.remove(t));
+            document.body.classList.add(theme);
+            localStorage.setItem('theme', theme);
 
-    window.onload = () => {
-      const savedTheme = localStorage.getItem('theme') || 'light';
-      setTheme(savedTheme);
-    };
+            const logoImg = document.querySelector('.navbar-brand img');
+            if (theme === 'theme-meme') {
+                if (!document.getElementById('meme-audio')) {
+                    const audio = document.createElement('audio');
+                    audio.id = 'meme-audio';
+                    audio.src = '{% static "meme_theme/hamster_dance.mp3" %}';
+                    audio.loop = true;
+                    audio.autoplay = true;
+                    audio.volume = 0.2;
+                    document.body.appendChild(audio);
+                }
+                if (logoImg) logoImg.src = '{% static "meme_theme/shrek.png" %}';
+            } else {
+                const oldAudio = document.getElementById('meme-audio');
+                if (oldAudio) oldAudio.remove();
+                if (logoImg) logoImg.src = '{% static "img/logo.png" %}';
+            }
+        }
 
-    const overlay = document.getElementById('konamiOverlay');
-    const iframe = document.getElementById('konamiVideo');
-    const konamiCode = [
-      'ArrowUp', 'ArrowUp',
-      'ArrowDown', 'ArrowDown',
-      'ArrowLeft', 'ArrowRight',
-      'ArrowLeft', 'ArrowRight',
-      'KeyB', 'KeyA'
-    ];
-    let buffer = [];
+        function toggleTheme() {
+            const nextTheme = THEMES[(THEMES.indexOf(currentTheme) + 1) % THEMES.length];
+            currentTheme = nextTheme;
+            applyTheme(nextTheme);
+        }
 
-    document.addEventListener('keydown', (e) => {
-      buffer.push(e.code);
-      if (buffer.length > konamiCode.length) buffer.shift();
-      if (JSON.stringify(buffer) === JSON.stringify(konamiCode)) {
-        overlay.style.display = 'flex';
-        iframe.src = "https://www.youtube.com/embed/RV0VJNvcBFU?autoplay=1&controls=1&loop=1&playlist=RV0VJNvcBFU";
-        buffer = [];
-      }
-    });
+        window.onload = () => {
+            applyTheme(currentTheme);
+        };
+    </script>
 
-    function hideKonami() {
-      overlay.style.display = 'none';
-      iframe.src = "";
-    }
-  </script>
+    <!-- KONAMI OVERLAY -->
+    <div id="konamiOverlay" role="dialog" aria-modal="true" aria-hidden="true">
+        <img id="konamiMegaImage" src="{% static 'meme_theme/cool-pic.png' %}" alt="COA VIDAS Sequence">
+        <iframe
+            id="konamiVideo"
+            src=""
+            allow="autoplay; encrypted-media"
+            allowfullscreen>
+        </iframe>
+        <button onclick="hideKonami()" aria-label="Закрити відео">✖️ Закрити</button>
+    </div>
+
+    <script>
+        const overlay = document.getElementById('konamiOverlay');
+        const iframe = document.getElementById('konamiVideo');
+
+        const konamiCode = [
+            'ArrowUp', 'ArrowUp',
+            'ArrowDown', 'ArrowDown',
+            'ArrowLeft', 'ArrowRight',
+            'ArrowLeft', 'ArrowRight',
+            'KeyB', 'KeyA'
+        ];
+
+        let buffer = [];
+
+        function showKonami() {
+            overlay.style.display = 'flex';
+            overlay.setAttribute('aria-hidden', 'false');
+            iframe.src = "https://www.youtube.com/embed/RV0VJNvcBFU?autoplay=1&controls=1&loop=1&playlist=RV0VJNvcBFU";
+        }
+
+        function hideKonami() {
+            overlay.style.display = 'none';
+            overlay.setAttribute('aria-hidden', 'true');
+            iframe.src = "";
+        }
+
+        document.addEventListener('keydown', (e) => {
+            buffer.push(e.code);
+            if (buffer.length > konamiCode.length) buffer.shift();
+
+            if (JSON.stringify(buffer) === JSON.stringify(konamiCode)) {
+                showKonami();
+                buffer = [];
+            }
+        });
+    </script>
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.6/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

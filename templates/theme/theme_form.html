@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% block title %}Нова Тема{% endblock %}
+{% block content %}
+<h1>🖌️ Створення Теми</h1>
+<form method="post">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit" class="btn btn-primary">💾 Зберегти</button>
+    <a href="{% url 'tasks:theme-list' %}" class="btn btn-secondary">⬅️ Назад</a>
+</form>
+{% endblock %}

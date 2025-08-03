@@ -1,61 +1,32 @@
 from django import forms
-from tasks.models import Task, Comment, Note
-from tasks.models import Theme
-from .models import Theme, Workshop
-
-class ThemeForm(forms.ModelForm):
-    workshop = forms.ModelChoiceField(
-        queryset=Workshop.objects.none(),  # default empty, will set in __init__
-        widget=forms.Select(attrs={'class': 'form-select'}),
-        required=False,
-        label='Майстерня'
-    )
-
-    class Meta:
-        model = Theme
-        fields = [
-            'name', 'description', 'workshop',
-            'primary_color', 'secondary_color', 'font_family', 'background_image'
-        ]
-        # widgets as above
-
-    def __init__(self, *args, **kwargs):
-        user = kwargs.pop('user', None)
-        super().__init__(*args, **kwargs)
-        if user:
-            self.fields['workshop'].queryset = Workshop.objects.filter(
-                owner=user
-            ) | Workshop.objects.filter(members=user)
-        else:
-            self.fields['workshop'].queryset = Workshop.objects.all()
-
+from tasks.models import Task, Comment, Theme
 
 class CommentForm(forms.ModelForm):
     class Meta:
         model = Comment
-        fields = ['text']
+        fields = ['comment_to_task']
 
 
 class TaskForm(forms.ModelForm):
     class Meta:
         model = Task
-        fields = ['title', 'description', 'status', 'priority', 'due_date', 'image', 'workshop', 'shared_with']
+        fields = ['title', 'description', 'status', 'priority', 'due_date']
         widgets = {
-            'due_date': forms.DateInput(attrs={'type': 'date'}),
-            'shared_with': forms.SelectMultiple(attrs={'class': 'form-control'})
+            'due_date': forms.DateInput(attrs={'type': 'date'})
         }
 
     def __init__(self, *args, **kwargs):
         super(TaskForm, self).__init__(*args, **kwargs)
         for field in self.fields:
             self.fields[field].widget.attrs.update({'class': 'form-control'})
+        self.fields['due_date'].widget.attrs['class'] += ' my-custom=datepicker'
 
 
 class TaskFilterForm(forms.Form):
     STATUS_CHOICES = [
         ('', 'Всі'),
         ('todo', 'To Do'),
-        ('in_progress', 'In Progress'),
+        ('in_progres', 'In Progress'),
         ('done', 'Done')
     ]
     status = forms.ChoiceField(choices=STATUS_CHOICES, required=False, label='Статус')
@@ -65,12 +36,17 @@ class TaskFilterForm(forms.Form):
         self.fields['status'].widget.attrs.update({'class': 'form-control'})
 
 
-class NoteForm(forms.ModelForm):
+class ThemeForm(forms.ModelForm):
     class Meta:
-        model = Note
-        fields = ['content', 'image']
+        model = Theme
+        fields = ['name', 'background_color', 'text_color', 'background_image']
+        widgets = {
+            'background_color': forms.TextInput(attrs={'type': 'color', 'class': 'form-control form-control-color'}),
+            'text_color': forms.TextInput(attrs={'type': 'color', 'class': 'form-control form-control-color'}),
+        }
 
     def __init__(self, *args, **kwargs):
-        super(NoteForm, self).__init__(*args, **kwargs)
+        super(ThemeForm, self).__init__(*args, **kwargs)
         for field in self.fields:
-            self.fields[field].widget.attrs.update({'class': 'form-control'})
+            if field not in ['background_color', 'text_color']:
+                self.fields[field].widget.attrs.update({'class': 'form-control'})

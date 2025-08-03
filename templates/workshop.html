@@ -1,0 +1,28 @@
+{% extends 'base.html' %}
+{% block title %}Воркшоп Тем{% endblock %}
+{% block content %}
+<h1>🛍 Воркшоп Тем</h1>
+<p>Оберіть одну з доступних тем, створених іншими користувачами.</p>
+
+<div class="row row-cols-1 row-cols-md-2 g-4">
+    <div class="col">
+        <div class="card">
+            <div class="card-header">🌙 Темна Тема</div>
+            <div class="card-body">
+                <p>Класична темна тема.</p>
+                <button onclick="applyTheme('theme-dark')" class="btn btn-dark">Застосувати</button>
+            </div>
+        </div>
+    </div>
+
+    <div class="col">
+        <div class="card">
+            <div class="card-header">😎 Мемна Тема</div>
+            <div class="card-body">
+                <p>Фон, музика та мемний курсор.</p>
+                <button onclick="applyTheme('theme-meme')" class="btn btn-warning">Застосувати</button>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

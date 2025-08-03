@@ -1,84 +1,59 @@
 from django.shortcuts import render, get_object_or_404
 from django.urls import reverse_lazy
-from django.views.generic import ListView, DetailView, CreateView, View, UpdateView, DeleteView
+from django.views.generic import (
+    ListView, DetailView, CreateView, UpdateView, DeleteView, TemplateView, View
+)
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.http import HttpResponseRedirect
-
-from tasks import models
-from tasks.forms import TaskForm, TaskFilterForm, NoteForm
+from tasks.models import Task, Comment, Theme
+from tasks.forms import TaskForm, TaskFilterForm
 from tasks.mixins import UserIsOwnerMixins
-from .forms import NoteForm
-from django.views.generic.edit import CreateView
-from django.urls import reverse_lazy
-from tasks.models import Theme
-from tasks.forms import ThemeForm
+
+
+# --- TASK LOGIC ---
 
 class TaskListView(LoginRequiredMixin, ListView):
-    model = models.Task
+    model = Task
     context_object_name = 'tasks'
     template_name = 'tasks/task_list.html'
 
     def get_queryset(self):
-        queryset = super().get_queryset()
+        queryset = super().get_queryset().filter(creator=self.request.user)
         status = self.request.GET.get('status', '')
         if status:
             queryset = queryset.filter(status=status)
-        return queryset.filter(creator=self.request.user)
+        return queryset
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
         context['form'] = TaskFilterForm(self.request.GET)
         return context
 
-
 class TaskDetailView(LoginRequiredMixin, DetailView):
-    model = models.Task
+    model = Task
     context_object_name = 'task'
     template_name = 'tasks/task_detail.html'
 
-    def get_context_data(self, **kwargs):
-        context = super().get_context_data(**kwargs)
-        context['note_form'] = NoteForm()
-        context['notes'] = self.object.notes.all()
-        return context
-
-    def post(self, request, *args, **kwargs):
-        self.object = self.get_object()
-        form = NoteForm(request.POST, request.FILES)
-        if form.is_valid():
-            note = form.save(commit=False)
-            note.task = self.object
-            note.author = request.user
-            note.save()
-            return HttpResponseRedirect(self.request.path_info)
-        context = self.get_context_data(note_form=form)
-        return self.render_to_response(context)
-
-
-
 class TaskCreateView(LoginRequiredMixin, CreateView):
-    model = models.Task
-    template_name = 'tasks/task_form.html'
+    model = Task
     form_class = TaskForm
+    template_name = 'tasks/task_form.html'
     success_url = reverse_lazy('tasks:task-list')
 
     def form_valid(self, form):
         form.instance.creator = self.request.user
         return super().form_valid(form)
 
-
 class TaskUpdateView(LoginRequiredMixin, UserIsOwnerMixins, UpdateView):
-    model = models.Task
+    model = Task
     form_class = TaskForm
     template_name = 'tasks/task_update_form.html'
     success_url = reverse_lazy('tasks:task-list')
 
-
 class TaskDeleteView(LoginRequiredMixin, UserIsOwnerMixins, DeleteView):
-    model = models.Task
-    success_url = reverse_lazy('tasks:task-list')
+    model = Task
     template_name = 'tasks/task_delete_confirmation.html'
-
+    success_url = reverse_lazy('tasks:task-list')
 
 class TaskCompleteView(LoginRequiredMixin, UserIsOwnerMixins, View):
     def post(self, request, *args, **kwargs):
@@ -89,24 +64,15 @@ class TaskCompleteView(LoginRequiredMixin, UserIsOwnerMixins, View):
 
     def get_object(self):
         task_id = self.kwargs.get('pk')
-        return get_object_or_404(models.Task, pk=task_id)
+        return get_object_or_404(Task, pk=task_id)
 
 
-# ✅ Додано створення Note з image
-class NoteCreateView(LoginRequiredMixin, View):
-    def post(self, request, *args, **kwargs):
-        task_id = self.kwargs.get('pk')
-        task = get_object_or_404(models.Task, pk=task_id, creator=request.user)
-        form = NoteForm(request.POST, request.FILES)
-        if form.is_valid():
-            note = form.save(commit=False)
-            note.task = task
-            note.user = request.user
-            note.save()
-        return HttpResponseRedirect(task.get_absolute_url())
-    
-class ThemeCreateView(CreateView):
+# --- THEME SYSTEM ---
+
+class ThemeEditorView(LoginRequiredMixin, TemplateView):
+    template_name = 'editor.html'
+
+class ThemeWorkshopView(LoginRequiredMixin, ListView):
     model = Theme
-    form_class = ThemeForm
-    template_name = 'themes/theme_form.html'
-    success_url = reverse_lazy('tasks:task-list')    
+    template_name = 'workshop.html'
+    context_object_name = 'themes'

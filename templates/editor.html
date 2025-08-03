@@ -1,0 +1,50 @@
+{% extends 'base.html' %}
+{% block title %}Редактор Тем{% endblock %}
+{% block content %}
+<h1>🎨 Редактор Тем</h1>
+<p>Тут можна створювати нові теми (CSS, кольори, фони, шрифти).</p>
+
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    
+    <div class="mb-3">
+        <label for="themeName" class="form-label">Назва теми</label>
+        <input type="text" class="form-control" id="themeName" name="theme_name">
+    </div>
+
+    <div class="mb-3">
+        <label for="bgColor" class="form-label">Колір фону</label>
+        <input type="color" class="form-control form-control-color" id="bgColor" name="bg_color" value="#ffffff">
+    </div>
+
+    <div class="mb-3">
+        <label for="textColor" class="form-label">Колір тексту</label>
+        <input type="color" class="form-control form-control-color" id="textColor" name="text_color" value="#000000">
+    </div>
+
+    <div class="mb-3">
+        <label for="themeImage" class="form-label">Зображення теми</label>
+        <input type="file" class="form-control" id="themeImage" name="theme_image" accept="image/*" onchange="previewThemeImage(this)">
+    </div>
+
+    <div class="mb-3">
+        <img id="themeImagePreview" src="#" alt="Превʼю зображення" style="display:none; max-width: 300px; border-radius: 8px; box-shadow: 0 0 10px rgba(0,0,0,0.3);">
+    </div>
+
+    <button class="btn btn-primary" type="submit">💾 Зберегти тему</button>
+</form>
+
+<script>
+function previewThemeImage(input) {
+    const preview = document.getElementById('themeImagePreview');
+    if (input.files && input.files[0]) {
+        const reader = new FileReader();
+        reader.onload = function(e) {
+            preview.src = e.target.result;
+            preview.style.display = 'block';
+        };
+        reader.readAsDataURL(input.files[0]);
+    }
+}
+</script>
+{% endblock %}

@@ -1,7 +1,9 @@
 {% load static %}
 <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container">
-        <a class="navbar-brand d-flex align-items-center" href="/">
+
+        <a class="navbar-brand" href="/">
+            <img id="logo-img" src="{% static 'img/logo.png' %}" alt="Logo" width="35" height="35" class="d-inline-block align-text-top">
             My_Task
         </a>
 
@@ -14,37 +16,30 @@
                 <li class="nav-item">
                     <a class="nav-link active" href="/">Головна</a>
                 </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'tasks:editor' %}">🎨 Редактор Тем</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'tasks:workshop' %}">🛠️ Воркшоп Тем</a>
+                </li>
+            </ul>
 
+            <ul class="navbar-nav">
                 {% if user.is_authenticated %}
-                    <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle" href="#" id="workshopDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            🏭 Workshops
-                        </a>
-                        <ul class="dropdown-menu" aria-labelledby="workshopDropdown">
-                            {% if user_workshops %}
-                                {% for workshop in user_workshops %}
-                                    <li><a class="dropdown-item" href="{% url 'workshop-detail' workshop.pk %}">{{ workshop.name }}</a></li>
-                                {% endfor %}
-                            {% else %}
-                                <li><span class="dropdown-item-text">No workshops</span></li>
-                            {% endif %}
-                        </ul>
-                    </li>
-
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'tasks:theme-create' %}">🎨 Створити тему</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'logout-page' %}">Вийти</a>
+                        <a class="nav-link active" href="{% url 'logout-page' %}">Вийти</a>
                     </li>
                 {% else %}
                     <li class="nav-item">
                         <a class="nav-link" href="{% url 'login-page' %}">Увійти</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'register-page' %}">Зареєструватися</a>
+                        <a class="nav-link active" href="{% url 'register-page' %}">Зареєструватися</a>
                     </li>
                 {% endif %}
+                <li class="nav-item">
+                    <button class="btn btn-outline-light ms-2" onclick="toggleTheme()">🌓</button>
+                </li>
             </ul>
         </div>
     </div>
