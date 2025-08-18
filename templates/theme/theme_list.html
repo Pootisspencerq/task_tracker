@@ -1,32 +1,33 @@
 {% extends 'base.html' %}
-{% block title %}Список Тем{% endblock %}
+
 {% block content %}
-<h1>🎨 Список Тем</h1>
-<a href="{% url 'tasks:theme-create' %}" class="btn btn-success mb-3">➕ Створити нову тему</a>
-<table class="table table-bordered table-hover">
-    <thead>
-        <tr>
-            <th>Назва</th>
-            <th>Колір фону</th>
-            <th>Колір тексту</th>
-            <th>Дії</th>
-        </tr>
-    </thead>
-    <tbody>
-        {% for theme in themes %}
-        <tr>
-            <td>{{ theme.name }}</td>
-            <td><span style="background: {{ theme.bg_color }}; padding: 5px 10px; display:inline-block;">{{ theme.bg_color }}</span></td>
-            <td><span style="color: {{ theme.text_color }};">{{ theme.text_color }}</span></td>
-            <td>
-                <a href="{% url 'tasks:theme-delete' theme.pk %}" class="btn btn-danger btn-sm">🗑️ Видалити</a>
-            </td>
-        </tr>
-        {% empty %}
-        <tr>
-            <td colspan="4">Немає створених тем.</td>
-        </tr>
-        {% endfor %}
-    </tbody>
-</table>
+<div class="container mt-4">
+    <h2>Воркшоп тем</h2>
+    <a href="{% url 'tasks:editor' %}" class="btn btn-primary mb-3">Створити нову тему</a>
+
+    {% if themes %}
+        <div class="list-group">
+            {% for theme in themes %}
+                <div class="list-group-item d-flex justify-content-between align-items-center">
+                    <div>
+                        <h5>{{ theme.name }}</h5>
+                        <p>
+                            Фон: <span style="background: {{ theme.background_color }}; padding: 3px 10px; border: 1px solid #ccc;"></span>
+                        </p>
+                        <p>
+                            Текст: <span style="color: {{ theme.text_color }}">{{ theme.text_color }}</span>
+                        </p>
+                    </div>
+                    <div>
+                        <a href="#" class="btn btn-sm btn-info">Переглянути</a>
+                        <a href="{% url 'tasks:theme-update' theme.id %}" class="btn btn-sm btn-warning">Редагувати</a>
+                        <a href="{% url 'tasks:theme-delete' theme.id %}" class="btn btn-sm btn-danger">Видалити</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <p>Ще немає створених тем.</p>
+    {% endif %}
+</div>
 {% endblock %}

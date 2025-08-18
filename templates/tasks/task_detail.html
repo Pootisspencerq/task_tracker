@@ -1,12 +1,9 @@
 {% extends 'base.html' %}
-
 {% block content %}
 <div class="container mt-3">
     <h2>{{ task.title }}</h2>
     <p>{{ task.description }}</p>
 
-
-    
     <p>Статус: <span class="badge badge-primary">{{ task.status }}</span></p>
     <p>Пріоритет: <span class="badge badge-secondary">{{ task.priority }}</span></p>
 
@@ -14,14 +11,28 @@
     <a href="{% url 'tasks:task-delete' task.id %}" class="btn btn-danger">Видалити</a>
 
     <hr>
-    <h2 class="display-4">Comments</h2>
+    {% if task.attachment %}
+        <h4>Прикріплений файл:</h4>
+
+        {% if task.attachment.url|lower|endswith:".jpg" or task.attachment.url|lower|endswith:".png" or task.attachment.url|lower|endswith:".jpeg" %}
+            <img src="{{ task.attachment.url }}" alt="attachment" class="img-fluid mt-2">
+        {% elif task.attachment.url|lower|endswith:".mp4" %}
+            <video controls class="mt-2 w-100">
+                <source src="{{ task.attachment.url }}" type="video/mp4">
+                Ваш браузер не підтримує відео.
+            </video>
+        {% else %}
+            <a href="{{ task.attachment.url }}" target="_blank">Завантажити файл</a>
+        {% endif %}
+    {% endif %}
+
+    <hr>
+    <h2 class="display-4">Коментарі</h2>
     {% for comment in task.comments.all %}
-    <p class="fw-bold">User: {{ comment.user }}</p>
-        <p>Label: {{ comment.text }}</p>
-
+        <p class="fw-bold">User: {{ comment.user }}</p>
+        <p>Label: {{ comment.comment_to_task }}</p>
     {% empty %}
-    <p>No comments yet.</p>
-
+        <p>Коментарів ще немає.</p>
     {% endfor %}
 </div>
 {% endblock %}

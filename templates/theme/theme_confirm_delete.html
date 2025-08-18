@@ -1,11 +1,13 @@
 {% extends 'base.html' %}
-{% block title %}Видалення Теми{% endblock %}
 {% block content %}
-<h1>⚠️ Підтвердження Видалення</h1>
-<p>Ви дійсно хочете видалити тему: <strong>{{ theme.name }}</strong>?</p>
-<form method="post">
-    {% csrf_token %}
-    <button type="submit" class="btn btn-danger">🗑️ Видалити</button>
-    <a href="{% url 'tasks:theme-list' %}" class="btn btn-secondary">⬅️ Скасувати</a>
-</form>
+<div class="container mt-4">
+    <h2>Видалити тему?</h2>
+    <p>Ви впевнені, що хочете видалити тему <strong>{{ theme.name }}</strong>?</p>
+
+    <form method="post">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Так, видалити</button>
+        <a href="{% url 'themes:theme-list' %}" class="btn btn-secondary">Скасувати</a>
+    </form>
+</div>
 {% endblock %}

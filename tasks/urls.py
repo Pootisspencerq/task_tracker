@@ -1,19 +1,28 @@
 from django.urls import path
 from .views import (
-    TaskListView, TaskDetailView, TaskUpdateView, TaskDeleteView,
-    TaskCreateView, TaskCompleteView,
-    ThemeEditorView, ThemeWorkshopView
+    TaskListView,
+    ThemeEditorView,
+    ThemeWorkshopView,
+    ThemeUpdateView,
+    ThemeDeleteView
 )
-
+from django.conf import settings
+from django.conf.urls.static import static
+from .views import NoteCreateView, NoteListView
 app_name = 'tasks'
-
 urlpatterns = [
     path('', TaskListView.as_view(), name='task-list'),
-    path('<int:pk>/', TaskDetailView.as_view(), name='task-detail'),
-    path('<int:pk>/update/', TaskUpdateView.as_view(), name='task-update'),
-    path('<int:pk>/delete/', TaskDeleteView.as_view(), name='task-delete'),
-    path('task-create/', TaskCreateView.as_view(), name='task-create'),
-    path('<int:pk>/complete/', TaskCompleteView.as_view(), name='task-complete'),
+    
+    # Замітки
+    path('notes/', NoteListView.as_view(), name='note-list'),
+    path('notes/create/', NoteCreateView.as_view(), name='note-create'),
+
+    # Теми
     path('themes/editor/', ThemeEditorView.as_view(), name='editor'),
     path('themes/workshop/', ThemeWorkshopView.as_view(), name='workshop'),
+    path('themes/<int:pk>/update/', ThemeUpdateView.as_view(), name='theme-update'),
+    path('themes/<int:pk>/delete/', ThemeDeleteView.as_view(), name='theme-delete'),
 ]
+
+if settings.DEBUG:
+    urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

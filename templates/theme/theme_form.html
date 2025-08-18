@@ -1,11 +1,66 @@
 {% extends 'base.html' %}
-{% block title %}Нова Тема{% endblock %}
+
 {% block content %}
-<h1>🖌️ Створення Теми</h1>
-<form method="post">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit" class="btn btn-primary">💾 Зберегти</button>
-    <a href="{% url 'tasks:theme-list' %}" class="btn btn-secondary">⬅️ Назад</a>
-</form>
+<div class="container mt-4">
+    <h2>Редактор теми</h2>
+    <form method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit" class="btn btn-success">Зберегти</button>
+        <a href="{% url 'tasks:workshop' %}" class="btn btn-secondary">Назад</a>
+    </form>
+
+    <hr>
+
+    <div class="card mt-3">
+        <div class="card-header">Прев'ю теми</div>
+        <div class="card-body" id="theme-preview">
+            <h4>Заголовок прикладу</h4>
+            <p>Це приклад тексту <span class="highlight">теми</span>.</p>
+        </div>
+    </div>
+</div>
+
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+    const primaryColorInput = document.getElementById("id_primary_color");
+    const secondaryColorInput = document.getElementById("id_secondary_color");
+    const fontFamilyInput = document.getElementById("id_font_family");
+    const bgImageInput = document.getElementById("id_background_image");
+
+    const preview = document.getElementById("theme-preview");
+    const highlight = preview.querySelector(".highlight");
+
+    function updatePreview() {
+        if (primaryColorInput.value) {
+            preview.style.color = primaryColorInput.value;
+        }
+        if (secondaryColorInput.value) {
+            highlight.style.backgroundColor = secondaryColorInput.value;
+        }
+        if (fontFamilyInput.value) {
+            preview.style.fontFamily = fontFamilyInput.value;
+        }
+    }
+
+    // прев’ю для зображення
+    bgImageInput?.addEventListener("change", function(event) {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                preview.style.backgroundImage = `url(${e.target.result})`;
+                preview.style.backgroundSize = "cover";
+            };
+            reader.readAsDataURL(file);
+        }
+    });
+
+    primaryColorInput?.addEventListener("input", updatePreview);
+    secondaryColorInput?.addEventListener("input", updatePreview);
+    fontFamilyInput?.addEventListener("change", updatePreview);
+
+    updatePreview(); // застосувати початкові значення
+});
+</script>
 {% endblock %}
