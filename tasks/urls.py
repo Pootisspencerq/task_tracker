@@ -22,6 +22,7 @@ urlpatterns = [
     path('themes/workshop/', ThemeWorkshopView.as_view(), name='workshop'),
     path('themes/<int:pk>/update/', ThemeUpdateView.as_view(), name='theme-update'),
     path('themes/<int:pk>/delete/', ThemeDeleteView.as_view(), name='theme-delete'),
+    
 ]
 
 if settings.DEBUG:

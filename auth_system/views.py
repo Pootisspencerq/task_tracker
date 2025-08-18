@@ -38,4 +38,4 @@ def logout_page(request):
     if request.user.is_authenticated:
         logout(request)
 
-    return redirect('login-page')
+    return redirect('login')
