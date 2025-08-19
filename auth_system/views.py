@@ -2,6 +2,7 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import login, logout
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
 
+
 def register_page(request):
     form = UserCreationForm()
     if request.method == 'POST':
@@ -11,12 +12,10 @@ def register_page(request):
             login(request, user)
             return redirect('tasks:task-list')
 
-
     context = {
         'form': form
     }
-
-    return render(request, template_name = 'tasks/register.html', context=context)
+    return render(request, 'auth/register.html', context)
 
 
 def login_page(request):
@@ -31,11 +30,10 @@ def login_page(request):
     context = {
         'form': form
     }
+    return render(request, 'auth/login.html', context)
 
-    return render(request, template_name='tasks/login.html', context=context)
 
 def logout_page(request):
     if request.user.is_authenticated:
         logout(request)
-
-    return redirect('login')
+    return redirect('auth:login')
