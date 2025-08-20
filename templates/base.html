@@ -146,14 +146,19 @@ body.theme-dark a:hover { color: #ffffff !important; }
                         </ul>
                     </li>
 
-                    <!-- Logout -->
-                    <li class="nav-item">
-                        <a class="nav-link text-danger" href="{% url 'logout' %}">🚪 Вийти</a>
-                    </li>
-                </ul>
-            </div>
-        </div>
-    </nav>
+<!-- Logout -->
+<li class="nav-item">
+    <form action="{% url 'logout' %}" method="post" class="d-inline">
+        {% csrf_token %}
+        <button type="submit" class="nav-link btn btn-link p-0 m-0" style="text-decoration:none;">
+            🚪 Вийти
+        </button>
+    </form>
+</li>
+                </ul>   <!-- ✅ закриваємо ul.navbar-nav -->
+            </div>      <!-- ✅ закриваємо .collapse.navbar-collapse -->
+        </div>          <!-- ✅ закриваємо .container-fluid -->
+    </nav>              <!-- ✅ закриваємо nav -->
 
     <!-- Контент -->
     <div class="container mt-4">
