@@ -4,11 +4,11 @@
 
 {% block content %}
 <div class="container mt-3">
-    <h2>📒 Мої завдання</h2>
+    <h2><i class="bi bi-pencil-square"></i> Мої завдання</h2>
 
     <!-- Кнопки створення -->
     <div class="mb-3 d-flex gap-2">
-        <a href="{% url 'tasks:task-create' %}" class="btn btn-primary">➕ Створити завдання</a>
+        <a href="{% url 'tasks:task-create' %}" class="btn btn-primary"><i class="bi bi-plus-lg"></i> Створити завдання</a>
         
     </div>
 
@@ -21,8 +21,8 @@
                     <p class="mb-0">{{ task.description|truncatewords:15 }}</p>
                 </div>
                 <div class="btn-group">
-                    <a href="{% url 'tasks:task-update' task.pk %}" class="btn btn-warning btn-sm">✏️ Редагувати</a>
-                    <a href="{% url 'tasks:task-delete' task.pk %}" class="btn btn-danger btn-sm">🗑 Видалити</a>
+                    <a href="{% url 'tasks:task-update' task.pk %}" class="btn btn-warning btn-sm"><i class="bi bi-pencil"></i> Редагувати</a>
+                    <a href="{% url 'tasks:task-delete' task.pk %}" class="btn btn-danger btn-sm"><i class="bi bi-trash"></i> Видалити</a>
                 </div>
             </li>
         {% empty %}

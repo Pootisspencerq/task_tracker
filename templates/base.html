@@ -139,25 +139,24 @@
                         <a class="nav-link" href="{% url 'tasks:task-list' %}"><i class="bi bi-house"></i> Головна</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'tasks:editor' %}">📝 Створити тему</a>
+                        <a class="nav-link" href="{% url 'tasks:editor' %}"><i class="bi bi-pencil-square"></i> Створити тему</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'tasks:workshop' %}">📒 магаз тем</a>
+                        <a class="nav-link" href="{% url 'tasks:workshop' %}"><i class="bi bi-book"></i> магаз тем</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="{% url 'tasks:note-list' %}">🗒️  замітки</a>
+                        <a class="nav-link" href="{% url 'tasks:note-list' %}"><i class="bi bi-journal"></i> замітки</a>
                     </li>
 
                     <!-- Тема -->
                     <li class="nav-item dropdown">
                         <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" id="themeToggleBtn">
-                            🎨 Тема
+                            <i class="bi bi-palette"></i> Тема
                         </a>
                         <ul class="dropdown-menu dropdown-menu-end" id="themeMenu">
-                            <li><a class="dropdown-item" href="#" data-theme="theme-light">🌞 Світла</a></li>
-                            <li><a class="dropdown-item" href="#" data-theme="theme-dark">🌑 Темна</a></li>
-                            <li><a class="dropdown-item" href="#" data-theme="theme-meme">😂 Мемна</a></li>
-
+                            <li><a class="dropdown-item" href="#" data-theme="theme-light"><i class="bi bi-brightness-high"></i> Світла</a></li>
+                            <li><a class="dropdown-item" href="#" data-theme="theme-dark"><i class="bi bi-moon-stars"></i> Темна</a></li>
+                            <li><a class="dropdown-item" href="#" data-theme="theme-meme"><i class="bi bi-emoji-laughing"></i> Мемна</a></li>
                         </ul>
                     </li>
 
@@ -166,7 +165,7 @@
                         <form action="{% url 'logout' %}" method="post" class="d-inline">
                             {% csrf_token %}
                             <button type="submit" class="nav-link btn btn-link p-0 m-0" style="text-decoration:none;">
-                                🚪 Вийти
+                                <i class="bi bi-door-closed"></i> Вийти
                             </button>
                         </form>
                     </li>
@@ -210,12 +209,14 @@
                     document.body.appendChild(audio);
                 }
                 if (logoImg) logoImg.src = '{% static "meme_theme/shrek.png" %}';
-                themeToggleBtn.innerText = "😂 Мемна";
+                themeToggleBtn.innerHTML = '<i class="bi bi-emoji-laughing"></i> Мемна';
             } else {
                 const oldAudio = document.getElementById('meme-audio');
                 if (oldAudio) oldAudio.remove();
                 if (logoImg) logoImg.src = '{% static "img/logo.png" %}';
-                themeToggleBtn.innerText = (theme === 'theme-light') ? "🌞 Світла" : "🌑 Темна";
+                themeToggleBtn.innerHTML = (theme === 'theme-light')
+                    ? '<i class="bi bi-brightness-high"></i> Світла'
+                    : '<i class="bi bi-moon-stars"></i> Темна';
             }
         }
 
