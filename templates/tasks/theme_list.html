@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+
+{% block title %}Мої теми{% endblock %}
+
+{% block content %}
+<div class="container mt-4">
+    <h2>🎨 Мої теми</h2>
+    <a href="{% url 'tasks:editor' %}" class="btn btn-primary mb-3">➕ Створити нову тему</a>
+
+    {% if themes %}
+        <ul class="list-group">
+            {% for theme in themes %}
+                <li class="list-group-item d-flex justify-content-between align-items-center">
+                    <span>
+                        <strong>{{ theme.name }}</strong>
+                        {% if theme.is_active %}
+                            <span class="badge bg-success ms-2">Активна</span>
+                        {% endif %}
+                    </span>
+                    <div class="btn-group">
+                        <a href="{% url 'tasks:theme-update' theme.id %}" class="btn btn-sm btn-warning">✏️ Редагувати</a>
+                        <a href="{% url 'tasks:theme-delete' theme.id %}" class="btn btn-sm btn-danger">🗑 Видалити</a>
+                        {% if not theme.is_active %}
+                            <a href="{% url 'tasks:add-user-theme' theme.id %}" class="btn btn-sm btn-outline-success">
+                                ✅ Активувати
+                            </a>
+                        {% endif %}
+                    </div>
+                </li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p class="text-muted">У вас ще немає власних тем. Створіть першу!</p>
+    {% endif %}
+</div>
+{% endblock %}

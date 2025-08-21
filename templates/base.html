@@ -30,39 +30,39 @@
         }
 
         /* ===== DARK ===== */
-body.theme-dark {
-    background-color: #121212 !important;
-    color: #e0e0e0 !important; /* основний текст світлий */
-}
-
-body.theme-dark .navbar,
-body.theme-dark .card,
-body.theme-dark .dropdown-menu,
-body.theme-dark .form-control {
-    background-color: #1e1e1e !important;
-    color: #e0e0e0 !important;
-    border: 1px solid #333 !important;
-}
-
-body.theme-dark .btn {
-    background-color: #333 !important;
-    color: #fff !important; /* текст на кнопках світлий */
-    border: 1px solid #555 !important;
-}
-
-body.theme-dark .btn:hover { 
-    background-color: #444 !important; 
-    color: #fff !important;
-}
-
-/* Заголовки, параграфи, посилання */
-body.theme-dark h1, body.theme-dark h2, body.theme-dark h3,
-body.theme-dark h4, body.theme-dark h5, body.theme-dark h6,
-body.theme-dark p, body.theme-dark li, body.theme-dark a, body.theme-dark label {
-    color: #e0e0e0 !important;
-}
-
-body.theme-dark a:hover { color: #ffffff !important; }
+        body.theme-dark {
+            background-color: #121212 !important;
+            color: #e0e0e0 !important;
+        }
+        body.theme-dark .navbar,
+        body.theme-dark .card,
+        body.theme-dark .dropdown-menu,
+        body.theme-dark .form-control {
+            background-color: #1e1e1e !important;
+            color: #e0e0e0 !important;
+            border: 1px solid #333 !important;
+        }
+        body.theme-dark .btn {
+            background-color: #333 !important;
+            color: #fff !important;
+            border: 1px solid #555 !important;
+        }
+        body.theme-dark .btn:hover { 
+            background-color: #444 !important; 
+            color: #fff !important;
+        }
+        body.theme-dark h1, body.theme-dark h2, body.theme-dark h3,
+        body.theme-dark h4, body.theme-dark h5, body.theme-dark h6,
+        body.theme-dark p, body.theme-dark li, body.theme-dark a, 
+        body.theme-dark label, body.theme-dark span {
+            color: #e0e0e0 !important;
+        }
+        body.theme-dark input[type="text"], 
+        body.theme-dark textarea {
+            background-color: #1e1e1e !important;
+            color: #e0e0e0 !important;
+            border: 1px solid #555 !important;
+        }
 
         /* ===== MEME ===== */
         body.theme-meme {
@@ -71,6 +71,7 @@ body.theme-dark a:hover { color: #ffffff !important; }
             background-attachment: fixed;
             color: lime !important;
             font-family: "Comic Sans MS", cursive, sans-serif;
+            text-shadow: 1px 1px 2px #000;
         }
         body.theme-meme .navbar,
         body.theme-meme .card,
@@ -84,11 +85,24 @@ body.theme-dark a:hover { color: #ffffff !important; }
             background-color: magenta !important;
             color: yellow !important;
             font-weight: bold;
-            text-shadow: 1px 1px 2px black;
+            text-transform: uppercase;
+            border: 2px solid black !important;
         }
         body.theme-meme .btn:hover {
             background-color: lime !important;
             color: black !important;
+        }
+        body.theme-meme h1, body.theme-meme h2, body.theme-meme h3,
+        body.theme-meme h4, body.theme-meme h5, body.theme-meme h6,
+        body.theme-meme p, body.theme-meme li, body.theme-meme a, 
+        body.theme-meme label, body.theme-meme span {
+            color: lime !important;
+        }
+        body.theme-meme input[type="text"], 
+        body.theme-meme textarea {
+            background-color: yellow !important;
+            color: black !important;
+            border: 2px solid black !important;
         }
 
         /* KONAMI OVERLAY */
@@ -146,19 +160,19 @@ body.theme-dark a:hover { color: #ffffff !important; }
                         </ul>
                     </li>
 
-<!-- Logout -->
-<li class="nav-item">
-    <form action="{% url 'logout' %}" method="post" class="d-inline">
-        {% csrf_token %}
-        <button type="submit" class="nav-link btn btn-link p-0 m-0" style="text-decoration:none;">
-            🚪 Вийти
-        </button>
-    </form>
-</li>
-                </ul>   <!-- ✅ закриваємо ul.navbar-nav -->
-            </div>      <!-- ✅ закриваємо .collapse.navbar-collapse -->
-        </div>          <!-- ✅ закриваємо .container-fluid -->
-    </nav>              <!-- ✅ закриваємо nav -->
+                    <!-- Logout -->
+                    <li class="nav-item">
+                        <form action="{% url 'logout' %}" method="post" class="d-inline">
+                            {% csrf_token %}
+                            <button type="submit" class="nav-link btn btn-link p-0 m-0" style="text-decoration:none;">
+                                🚪 Вийти
+                            </button>
+                        </form>
+                    </li>
+                </ul>
+            </div>
+        </div>
+    </nav>
 
     <!-- Контент -->
     <div class="container mt-4">

@@ -4,11 +4,15 @@ from .views import (
     ThemeEditorView,
     ThemeWorkshopView,
     ThemeUpdateView,
-    ThemeDeleteView
+    ThemeDeleteView,
+    ThemeAddView,
+    NoteCreateView,
+    NoteListView
 )
 from django.conf import settings
 from django.conf.urls.static import static
 from .views import NoteCreateView, NoteListView
+
 app_name = 'tasks'
 urlpatterns = [
     path('', TaskListView.as_view(), name='task-list'),
@@ -22,7 +26,10 @@ urlpatterns = [
     path('themes/workshop/', ThemeWorkshopView.as_view(), name='workshop'),
     path('themes/<int:pk>/update/', ThemeUpdateView.as_view(), name='theme-update'),
     path('themes/<int:pk>/delete/', ThemeDeleteView.as_view(), name='theme-delete'),
-    
+    path('themes/<int:pk>/add/', ThemeAddView.as_view(), name='add-user-theme'),
+
+
+
 ]
 
 if settings.DEBUG:
