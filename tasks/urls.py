@@ -12,11 +12,13 @@ from .views import (
 from django.conf import settings
 from django.conf.urls.static import static
 from .views import NoteCreateView, NoteListView
-
+from .import views 
 app_name = 'tasks'
 urlpatterns = [
     path('', TaskListView.as_view(), name='task-list'),
-    
+    path("task/create/", views.TaskCreateView.as_view(), name='task-create'),
+    path("task/<int:pk>/update",views.TaskUpdateView.as_view(), name='task-update'),
+    path("task/<int:pk>/delete",views.TaskDeleteView.as_view(), name='task-delete'),
     # Замітки
     path('notes/', NoteListView.as_view(), name='note-list'),
     path('notes/create/', NoteCreateView.as_view(), name='note-create'),

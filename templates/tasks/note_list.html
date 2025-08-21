@@ -1,0 +1,31 @@
+{% extends "base.html" %}
+
+{% block title %}Воркшоп{% endblock %}
+
+{% block content %}
+<div class="container mt-3">
+    <h2>📒 замітки</h2>
+
+    <!-- Кнопки створення -->
+    <div class="mb-3 d-flex gap-2">
+        <a href="{% url 'tasks:note-create' %}" class="btn btn-primary">➕ Створити замітку</a>
+        
+    </div>
+
+    <!-- Список завдань -->
+    <ul class="list-group">
+        {% for note in notes %}
+            <li class="list-group-item d-flex justify-content-between align-items-center">
+                <div>
+                    <strong>{{ note.name }}</strong>
+                    <p class="mb-0">{{ note.content|truncatewords:15 }}</p>
+                </div>
+                <div class="btn-group">
+                    
+            </li>
+        {% empty %}
+            <li class="list-group-item">Завдань ще немає. Створіть перше заміток!</li>
+        {% endfor %}
+    </ul>
+</div>
+{% endblock %}

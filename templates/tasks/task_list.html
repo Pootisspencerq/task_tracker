@@ -4,29 +4,29 @@
 
 {% block content %}
 <div class="container mt-3">
-    <h2>📒 Мої теми</h2>
+    <h2>📒 Мої завдання</h2>
 
     <!-- Кнопки створення -->
     <div class="mb-3 d-flex gap-2">
-        <a href="{% url 'tasks:editor' %}" class="btn btn-primary">➕ Створити тему</a>
-        <a href="{% url 'tasks:workshop' %}" class="btn btn-success">📚 Воркшоп</a>
+        <a href="{% url 'tasks:task-create' %}" class="btn btn-primary">➕ Створити завдання</a>
+        
     </div>
 
-    <!-- Список тем -->
+    <!-- Список завдань -->
     <ul class="list-group">
-        {% for theme in object_list %}
+        {% for task in tasks %}
             <li class="list-group-item d-flex justify-content-between align-items-center">
                 <div>
-                    <strong>{{ theme.name }}</strong>
-                    <p class="mb-0">{{ theme.description|truncatewords:15 }}</p>
+                    <strong>{{ task.name }}</strong>
+                    <p class="mb-0">{{ task.description|truncatewords:15 }}</p>
                 </div>
                 <div class="btn-group">
-                    <a href="{% url 'tasks:theme-update' theme.pk %}" class="btn btn-warning btn-sm">✏️ Редагувати</a>
-                    <a href="{% url 'tasks:theme-delete' theme.pk %}" class="btn btn-danger btn-sm">🗑 Видалити</a>
+                    <a href="{% url 'tasks:task-update' task.pk %}" class="btn btn-warning btn-sm">✏️ Редагувати</a>
+                    <a href="{% url 'tasks:task-delete' task.pk %}" class="btn btn-danger btn-sm">🗑 Видалити</a>
                 </div>
             </li>
         {% empty %}
-            <li class="list-group-item">Тем ще немає. Створіть першу тему!</li>
+            <li class="list-group-item">Завдань ще немає. Створіть перше завдання!</li>
         {% endfor %}
     </ul>
 </div>

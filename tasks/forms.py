@@ -62,7 +62,7 @@ class ThemeForm(forms.ModelForm):
 class NoteForm(forms.ModelForm):
     class Meta:
         model = Note
-        fields = ['task', 'title', 'content', 'image']
+        fields = [ 'title', 'content', 'image']
         widgets = {
             'title': forms.TextInput(attrs={'class': 'form-control'}),
             'content': forms.Textarea(attrs={'class': 'form-control', 'rows': 4}),

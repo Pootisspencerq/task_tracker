@@ -182,7 +182,7 @@ class NoteCreateView(LoginRequiredMixin, CreateView):
     success_url = reverse_lazy('tasks:note-list')
 
     def form_valid(self, form):
-        form.instance.user = self.request.user
+        form.instance.creator = self.request.user
         return super().form_valid(form)
 
 
@@ -192,4 +192,4 @@ class NoteListView(LoginRequiredMixin, ListView):
     context_object_name = 'notes'
 
     def get_queryset(self):
-        return Note.objects.filter(user=self.request.user)
+        return Note.objects.filter(creator=self.request.user)
